@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
 using WebApplication1.DTO.Question;
@@ -10,26 +11,29 @@ namespace WebApplication1.Controllers
     public class QuestionController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public QuestionController(AppDbContext context)
+
+        public QuestionController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        [HttpPut]
+        [HttpPut("Update/{id}")]
         public IActionResult Update(int id, QuestionPutDto dto)
         {
-            var options = _context.Questions.FirstOrDefault(x => x.Id == id);
+            var questionToUpdate = _context.Questions.FirstOrDefault(x => x.Id == id);
 
-            if (options == null) return NotFound();
+            if (questionToUpdate == null) return NotFound();
 
-            options.Name = dto.Name;
-            options.Points = dto.Points;
+            _mapper.Map(dto, questionToUpdate);
 
-            _context.Update(options);
+            _context.Update(questionToUpdate);
             _context.SaveChanges();
 
             return Ok();
         }
+
     }
 }
