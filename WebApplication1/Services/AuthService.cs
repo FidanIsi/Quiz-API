@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebApplication1.DTO.Account;
+using WebApplication1.DTO.User;
 using WebApplication1.Entities;
 
 namespace WebApplication1.Services

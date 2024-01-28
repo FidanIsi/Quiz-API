@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using WebApplication1.Services;
 using Microsoft.Win32;
+using WebApplication1.DTO.User;
 
 namespace WebApplication1.Controllers
 {
@@ -43,8 +44,8 @@ namespace WebApplication1.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            //var (status, message) = await _authService.SignUp(dto, UserRoles.User);
-            var (status, message) = await _authService.SignUp(dto, UserRoles.Admin);
+            var (status, message) = await _authService.SignUp(dto, UserRoles.User);
+            //var (status, message) = await _authService.SignUp(dto, UserRoles.Admin);
             if (status == 0)
             {
                 return BadRequest(message);

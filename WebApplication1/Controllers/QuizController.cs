@@ -16,6 +16,7 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, User")]
     public class QuizController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -28,6 +29,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize(Roles = "Admin, User")]
         public IActionResult GetAll()
         {
             var quizzes = _context.Quizzes
@@ -38,6 +40,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("GetById/{quizId}")]
+        [Authorize(Roles = "Admin, User")]
         public IActionResult GetById(int quizId)
         {
             var quiz = _context.Quizzes.Include(q => q.Questions).ThenInclude(q => q.Options).SingleOrDefault(x => x.Id == quizId);
@@ -51,6 +54,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost("Create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(QuizPostDto quizPostDto)
         {
             var newQuiz = _mapper.Map<Quiz>(quizPostDto);
@@ -63,6 +67,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPut("Update/{quizId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Update(int quizId, QuizPutDto quizPutDto)
         {
             var existingQuiz = _context.Quizzes.Find(quizId);
@@ -78,6 +83,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpDelete("Delete/{quizId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int quizId)
         {
             var quizToDelete = _context.Quizzes.Include(q => q.Questions).ThenInclude(q => q.Options).SingleOrDefault(q => q.Id == quizId);
